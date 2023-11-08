@@ -8,34 +8,35 @@
     <link rel="stylesheet" href="assets/css/product.css">
   </head>
   <body>
-    <header class="p-3 text-bg-success">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success p-3">
       <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            <img height="32" src="assets/img/logo.png" alt="" style="filter: invert(1);">
-            <span class="ms-2 fs-5">PantaUdara</span>
-          </a>
-          <ul class="nav col-12 col-lg-auto ms-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.html" class="nav-link px-2 text-white">Home</a></li>
-            <li><a href="catalog.html" class="nav-link px-2 text-white">Marketplace</a></li>
-            <li><a href="Search.html" class="nav-link px-2 text-white">Pencarian</a></li>
-            <li><a href="#" class="nav-link px-2 text-white">About Us</a></li>
+        <a href="/" class="d-flex align-items-center mb-lg-0 text-white text-decoration-none">
+          <img height="32" src="assets/img/logo.png" alt="" style="filter: invert(1);">
+          <span class="ms-2 fs-5">PantaUdara</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="catalog.html">Marketplace</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="search.html">Pencarian</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">About Us</a></li>
           </ul>
         </div>
       </div>
-    </header>
-
+    </nav>
     <hr class="m-0">
-
     <section class="bg-success py-5">
       <div class="px-4 py-5 text-center">
         <h1 class="display-5 fw-bold text-white">Cari Kota</h1>
         <div class="col-lg-6 mx-auto">
           <div class="row">
-            <div class="col-10 p-0">
+            <div class="col-12 col-md-10 p-0 mb-2">
               <input type="text" class="form-control">
             </div>
-            <div class="col-2 p-0">
+            <div class="col-12 col-md-2 p-0">
               <button type="button" class="btn btn-light px-4">Cari</button>
             </div>
           </div>
@@ -120,6 +121,8 @@
         </ul>
       </div>
     </footer>
+
+    <script src="assets/js/bootstrap.min.js"></script>
     
   </body>
 </html>
