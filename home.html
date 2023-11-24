@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Pantau Udara - Cari</title>
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="assets/css/product.css">
+   </head>
+   <body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-success p-3">
+         <div class="container">
+            <a href="home.html" class="d-flex align-items-center mb-lg-0 text-white text-decoration-none">
+            <img height="32" src="assets/img/logo.png" alt="" style="filter: invert(1);">
+            <span class="ms-2 fs-5" >PantaUdara</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarsExample07">
+               <ul class="navbar-nav ms-auto">
+                  <li class="nav-item"><a class="nav-link text-white" href="home.html">Home</a></li>
+                  <li class="nav-item"><a class="nav-link text-white" href="catalog.html">Marketplace</a></li>
+                  <li class="nav-item"><a class="nav-link text-white" href="search.html">Pencarian</a></li>
+                  <li class="nav-item"><a class="nav-link text-white" href="#">About Us</a></li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+      <section>
+         <div class="card text-bg-dark mb-3 position-absolute z-1 top-10" style="max-width: 25rem; opacity: 70%; top: 200px; left: 200px" >
+            <div class="card-body">
+               <h5 class="card-title p-4">Bersihkan Udara Anda dengan Kualitas Produk Terbaik</h5>
+               <p class="card-text mb-4 ms-4">Informasi kualitas udara di lingkungan sekitar anda dan temukan produk kesehatan yang anda butuhkan</p>
+            </div>
+         </div>
+         <head>
+            <title>US Air Quality Index Map</title>
+            <style>
+               /* CSS untuk menentukan ukuran peta */
+               #map {
+               height: 600px; /* Atur tinggi peta */
+               width: 100%; /* Gunakan lebar penuh */
+               }
+            </style>
+         </head>
+         <body>
+            <!-- Wadah untuk peta -->
+            <div id="map"></div>
+            <script>
+               // Fungsi untuk menginisialisasi peta
+               function initMap() {
+                   const location = {
+                      latitude: 37.357854364386206,
+                      longitude: -121.86087799078408
+                   }
+               
+                   const locations = [
+                      { lat: 37.357854364386206, lng: -121.86087799078408 },
+                      { lat: 37.7749, lng: -122.4194 },
+                   ]
+               
+                   fetch('https://airquality.googleapis.com/v1/currentConditions:lookup?key=AIzaSyBr7MTDGGqm2ukCLGr9CrhZyHmJpDJQPzw', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                         "universalAqi": true,
+                         "location": location,
+                        "extraComputations": [
+                            "HEALTH_RECOMMENDATIONS",
+                            "DOMINANT_POLLUTANT_CONCENTRATION",
+                            "POLLUTANT_CONCENTRATION",
+                            "LOCAL_AQI",
+                            "POLLUTANT_ADDITIONAL_INFO"
+                        ],
+                        "languageCode": "en"
+                      }),
+                   })
+                      .then(response => response.json())
+                      .then(data => {
+                         console.log(data)
+                           // Mendapatkan informasi lokasi dan AQI
+                           var AQI = data.indexes[0].aqi;
+                           var category = data.indexes[0].category;
+               
+                           // Lokasi koordinat (Misalnya, pusat koordinat Amerika Serikat)
+                            // var USCenter = { lat: location.latitude, lng: location.longitude };
+                            var USCenter = { lat: location.latitude, lng: location.longitude };
+               
+                            // Opsi untuk peta
+                            var mapOptions = {
+                                zoom: 10, // Tingkat zoom
+                                center: USCenter // Pusat peta
+                            };
+               
+                            // Membuat objek peta baru
+                            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+               
+                           // Menambahkan marker pada lokasi dengan informasi AQI
+                           var marker = new google.maps.Marker({
+                               position: USCenter,
+                               map: map,
+                               title: 'AQI: ' + AQI + ' - ' + category
+                           });
+               
+                           // Menambahkan info window dengan detail kualitas udara
+                           var contentString = '<div>' +
+                               '<h2>Air Quality Information</h2>' +
+                               '<p>AQI: ' + AQI + ' - ' + category + '</p>' +
+                               '<p>Location: 37.0902, -95.7129</p>' +
+                               '</div>';
+               
+                           var infowindow = new google.maps.InfoWindow({
+                               content: contentString
+                           });
+               
+                           infowindow.open(map, marker); // Menampilkan InfoWindow secara otomatis
+               
+               
+                           marker.addListener('click', function() {
+                               infowindow.open(map, marker);
+                           });
+               
+                       })
+                       .catch(error => {
+                           console.error('Error:', error);
+                       });
+               }
+               
+               // Panggil fungsi initMap saat dokumen dimuat
+               document.addEventListener('DOMContentLoaded', initMap);
+            </script>
+            <!-- Panggil Google Maps API dengan API key -->
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBr7MTDGGqm2ukCLGr9CrhZyHmJpDJQPzw"></script>
+   </body>
+   </section>
+   <section class="mt-5">
+      <div class="container">
+         <div class="d-flex justify-content-between gap-5 px-2">
+            <div class="w-30 h-75" style="border: 1px solid gray; border-radius: 20px;">
+               <div class="gap-4 d-flex p-3" style="background-color: #e06667; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                  <div class="p-2 text-white" style="background-color: #cc0100; border-radius: 10px">
+                     AQI US 
+                     <br/>
+                     194
+                  </div>
+                  <div>
+                     Index AQI Langsung
+                     <br />
+                     Tidak Sehat
+                  </div>
+                  <div><img src="assets/img/sad.png" alt="Emoticon" class="emoticon-img" style="width: 50px; height: 50px;"></div>
+               </div>
+               <div class="d-flex flex-column gap-3 p-3">
+                  <div>Info Udara Lokasi Sekitar</div>
+                  <div class="fw-bold text-center">Tangerang Selatan, Banten</div>
+                  <div>24 November 2023</div>
+               </div>
+            </div>
+            <div class="col">
+               <div class="container ">
+                  <h4>Rangking Kota</h4>
+                  <div class="card">
+                     <div class="card-body p-1">
+                        <!--Table-->
+                        <table class="table table-hover table-borderless ms-1">
+                           <!--Table head-->
+                           <thead class="mdb-color darken-3">
+                              <tr class="text-white">
+                                 <th style="width: 50px"></th>
+                                 <th>Nama Kota</th>
+                                 <th>AQI Index</th>
+                                 <th>Status</th>
+                              </tr>
+                           </thead>
+                           <!--Table head-->
+                           <!--Table body-->
+                           <tbody>
+                              <tr>
+                                 <td>#1</td>
+                                 <td>Tengerang Selatan, Banten </td>
+                                 <td><span class="badge bg-danger">194</span></td>
+                                 <td>Tidak Sehat</td>
+                              </tr>
+                              <tr>
+                                 <td>#2</td>
+                                 <td>DKI Jakarta</td>
+                                 <td><span class="badge bg-danger">177</span></td>
+                                 <td>Tidak Sehat</td>
+                              </tr>
+                              <tr>
+                                 <td>#3</td>
+                                 <td>Kota Denpasar, Bali</td>
+                                 <td><span class="badge bg-warning">143</span></td>
+                                 <td>Moderate</td>
+                              </tr>
+                              <tr>
+                                 <td>#4</td>
+                                 <td>Kota Bandung, Jawa Barat</td>
+                                 <td><span class="badge bg-warning">121</span></td>
+                                 <td>Moderate</td>
+                              </tr>
+                              <tr>
+                                 <td>#5</td>
+                                 <td>Pekan Baru, Riau</td>
+                                 <td><span class="badge bg-success">46</span></td>
+                                 <td>Sehat</td>
+                              </tr>
+                              <tr>
+                                 <td>#6</td>
+                                 <td>Palangka Raya, Kalimantan Tengah</td>
+                                 <td><span class="badge bg-success">41</span></td>
+                                 <td>Sehat</td>
+                              </tr>
+                           </tbody>
+                           <!--Table body-->
+                        </table>
+                        <!--Table-->
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   </section>
+   <section >
+      <div>
+         <div class="container mt-4 " >
+            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Kota Kualitas Udara Terbaik</button>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Kota Kualitas Udara Terburuk</button>
+               </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+               <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                  <div class="container mt-4 " >
+                     <!--MDB Tables-->
+                     <div class="container ">
+                        <div class="card">
+                           <div class="card-body p-1 ">
+                              <!--Table-->
+                              <table class="table table-hover table-bordered" >
+                                 <!--Table head-->
+                                 <thead class="mdb-color darken-3">
+                                    <tr class="text-white">
+                                       <th style="width: 50px">No.</th>
+                                       <th>Nama Kota</th>
+                                       <th>AQI Index</th>
+                                       <th>Jumlah Penduduk</th>
+                                       <th>Status</th>
+                                    </tr>
+                                 </thead>
+                                 <!--Table head-->
+                                 <!--Table body-->
+                                 <tbody>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>Kuta, Bali</td>
+                                       <td><span class="badge bg-success">10</span></td>
+                                       <td>48.197</td>
+                                       <td>Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2</td>
+                                       <td>Banda Aceh, Aceh</td>
+                                       <td><span class="badge bg-success">21</span></td>
+                                       <td>268.148</td>
+                                       <td>Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>3</td>
+                                       <td>Sorong, Papua Barat Daya</td>
+                                       <td><span class="badge bg-success">21</span></td>
+                                       <td>254.294</td>
+                                       <td>Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>4</td>
+                                       <td>Sukabumi, Jawa Barat</td>
+                                       <td><span class="badge bg-success">35</span></td>
+                                       <td>318.117</td>
+                                       <td>Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5</td>
+                                       <td>Pontianak, Kalimantan Barat</td>
+                                       <td><span class="badge bg-success">40</span></td>
+                                       <td>646.661</td>
+                                       <td>Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>6</td>
+                                       <td>Palangka Raya, Kalimantan Tengah</td>
+                                       <td><span class="badge bg-success">41</span></td>
+                                       <td>281.096</td>
+                                       <td>Sehat</td>
+                                    </tr>
+                                 </tbody>
+                                 <!--Table body-->
+                              </table>
+                              <!--Table-->
+                           </div>
+                        </div>
+                     </div>
+                     <!--MDB Tables-->
+                  </div>
+               </div>
+               <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                  <div class="container mt-4 " >
+                     <!--MDB Tables-->
+                     <div class="container ">
+                        <div class="card">
+                           <div class="card-body p-1 ">
+                              <!--Table-->
+                              <table class="table table-hover table-bordered" >
+                                 <!--Table head-->
+                                 <thead class="mdb-color darken-3">
+                                    <tr class="text-white">
+                                       <th style="width: 50px">No.</th>
+                                       <th>Nama Kota</th>
+                                       <th>AQI Index</th>
+                                       <th>Jumlah Penduduk</th>
+                                       <th>Status</th>
+                                    </tr>
+                                 </thead>
+                                 <!--Table head-->
+                                 <!--Table body-->
+                                 <tbody>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>Tangerang Selatan, Banten</td>
+                                       <td><span class="badge bg-danger">194</span></td>
+                                       <td>1.800.000</td>
+                                       <td>Tidak Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2</td>
+                                       <td>DKI Jakarta</td>
+                                       <td><span class="badge bg-danger">177</span></td>
+                                       <td>10.560.000</td>
+                                       <td>Tidak Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>3</td>
+                                       <td>Bandar Lampung, Lampung</td>
+                                       <td><span class="badge bg-danger">166</span></td>
+                                       <td>1.096.936</td>
+                                       <td>Tidak Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>4</td>
+                                       <td>Medan, Sumatera Utara</td>
+                                       <td><span class="badge bg-danger">165</span></td>
+                                       <td>2.460.858</td>
+                                       <td>Tidak Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5</td>
+                                       <td>Palembang, Sumatera Selatan</td>
+                                       <td><span class="badge bg-danger">161</span></td>
+                                       <td>1.843.000</td>
+                                       <td>Tidak Sehat</td>
+                                    </tr>
+                                    <tr>
+                                       <td>6</td>
+                                       <td>Serang, Banten</td>
+                                       <td><span class="badge bg-danger">155</span></td>
+                                       <td>666.600</td>
+                                       <td>Tidak Sehat</td>
+                                    </tr>
+                                 </tbody>
+                                 <!--Table body-->
+                              </table>
+                              <!--Table-->
+                           </div>
+                        </div>
+                     </div>
+                     <!--MDB Tables-->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <section class="section-products">
+      <div class="container">
+         <div class="row justify-content-left text-left">
+            <div class="col-md-8 col-lg-6">
+               <div class="header">
+                  <h2>Temukan Produk Kesehatan</h2>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <!-- Single Product -->
+            <div class="col-md-6 col-lg-4 col-xl-3 position-relative">
+               <div id="product-1" class="single-product">
+                  <div class="part-1">
+                     <span class="discount bg-danger">15% off</span>
+                     <img src="assets/img/samsung.jpg" alt="">
+                  </div>
+                  <div class="part-2">
+                     <h3 class="product-title">Samsung Air Purifier AX60</h3>
+                     <div style="display: flex;">
+                        <div style="margin-right: 20px;">
+                           <p class="text-decoration-line-through" style="color: #a9a9a9">Rp. 4.500.000
+                           </h4>
+                        </div>
+                        <div>
+                           <h4 class="product-price">Rp. 3.825.000</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Single Product -->
+            <div class="col-md-6 col-lg-4 col-xl-3 position-relative">
+               <div id="product-1" class="single-product">
+                  <div class="part-1">
+                     <img src="assets/img/masker.jpeg" alt="">
+                  </div>
+                  <div class="part-2">
+                     <h3 class="product-title">Masker LG Puricare AP551</h3>
+                     <h4 class="product-price">Rp. 2.399.000</h4>
+                  </div>
+               </div>
+            </div>
+            <!-- Single Product -->
+            <div class="col-md-6 col-lg-4 col-xl-3 position-relative">
+               <div id="product-1" class="single-product">
+                  <div class="part-1">
+                     <span class="discount bg-danger">15% off</span>
+                     <img src="assets/img/airmonitor.jpeg" alt="">
+                  </div>
+                  <div class="part-2">
+                     <h3 class="product-title">Air Quality Detector Ozone</h3>
+                     <div style="display: flex;">
+                        <div style="margin-right: 20px;">
+                           <p class="text-decoration-line-through" style="color: #a9a9a9">Rp. 2.100.000
+                           </h4>
+                        </div>
+                        <div>
+                           <h4 class="product-price">Rp. 1.785.000</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Single Product -->
+            <div class="col-md-6 col-lg-4 col-xl-3 position-relative" >
+               <div id="product-1" class="single-product">
+                  <div class="part-1">
+                     <img src="assets/img/cekgula.png" alt="">
+                  </div>
+                  <div class="part-2">
+                     <h3 class="product-title">Cek Gula Darah Digital</h3>
+                     <h4 class="product-price">Rp. 350.000</h4>
+                  </div>
+               </div>
+               <a href="catalog.html">
+                  <div class="position-absolute top-50 end-0 translate-middle-y" style="margin-top: -25px; margin-right: -80px;">
+                     <img src="assets/img/right.png" alt="Right Arrow" class="next-btn" style="width: 45px; height: 45px;">
+                  </div>
+               </a>
+            </div>
+         </div>
+      </div>
+   </section>
+   <footer class="py-3 mt-4 bg-success">
+      <div class="container">
+         <ul class="nav justify-content-start">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-white">Home</a></li>
+            <li class="nav-item"><a href="catalog.html" class="nav-link px-2 text-white">Marketplace</a></li>
+            <li class="nav-item"><a href="search.html" class="nav-link px-2 text-white">Pencarian</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-white">About Us</a></li>
+         </ul>
+      </div>
+      <script src="assets/js/bootstrap.min.js"></script>
+   </footer>
+   </body>
+</html>
